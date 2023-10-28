@@ -1,5 +1,7 @@
 ### provision the infrastructure
 ```bash
+cd scylladb-eks-terraform/terraform/
+
 terraform init
 
 terraform apply -auto-approve
