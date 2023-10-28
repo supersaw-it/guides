@@ -61,20 +61,20 @@ function wait-for-pod-ready {
     done
 }
 
-
 ### cert manager
-echo "Starting the cert manger..."
+echo "Starting the cert manager..."
 kubectl apply -f ./scylladb-full-manifests/common/cert-manager.yaml
 kubectl wait --for condition=established --timeout=60s crd/certificates.cert-manager.io crd/issuers.cert-manager.io
 wait-for-object-creation cert-manager deployment.apps/cert-manager-webhook
 kubectl -n cert-manager rollout status --timeout=5m deployment.apps/cert-manager-webhook
+sleep 10
 
 ### scylla operator
 echo "Starting the scylla operator..."
 kubectl apply -f ./scylladb-full-manifests/common/operator.yaml
 kubectl wait --for condition=established crd/nodeconfigs.scylla.scylladb.com
 kubectl wait --for condition=established crd/scyllaclusters.scylla.scylladb.com
-wait-for-object-creation scylla-operator deployment.apps/scylla-operator
+wait-for-pod-ready scylla-operator webhook-server
 kubectl -n scylla-operator rollout status --timeout=5m deployment.apps/scylla-operator
 kubectl -n scylla-operator rollout status --timeout=5m deployment.apps/webhook-server
 
