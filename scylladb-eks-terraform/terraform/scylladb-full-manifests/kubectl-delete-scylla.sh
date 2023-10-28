@@ -5,12 +5,12 @@ set -euo pipefail
 ### scylla main cluster
 echo "Removing the scylla cluster..."
 kubectl delete -f ./scylladb-full-manifests/cluster.yaml
-sleep 30
+sleep 5
 
 ### scylla manager
 echo "Removing the scylla manager cluster..."
 kubectl delete -f ./scylladb-full-manifests/common/manager.yaml
-sleep 15
+sleep 5
 
 ### Remove local volume provisioner
 echo "Uninstalling local volume provisioner..."
