@@ -1,0 +1,106 @@
+# Namespace where the Scylla Cluster will be created
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: scylla
+
+---
+
+# Scylla Cluster
+apiVersion: scylla.scylladb.com/v1
+kind: ScyllaCluster
+metadata:
+  name: scylla-cluster
+  namespace: scylla
+spec:
+  version: 5.2.7
+  agentVersion: 3.1.2
+  cpuset: true
+  network:
+    hostNetworking: true
+  sysctls:
+  - "fs.aio-max-nr=2097152"
+  datacenter:
+    name: eu-central-1
+    racks:
+    - name: a
+      members: 1
+      storage:
+        storageClassName: scylladb-local-xfs
+        capacity: 50G
+      resources:
+        limits:
+          cpu: 1
+          memory: 6G
+      placement:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: topology.kubernetes.io/zone
+                  operator: In
+                  values:
+                    - eu-central-1a
+                - key: scylla.scylladb.com/node-type
+                  operator: In
+                  values:
+                  - scylla
+        tolerations:
+          - key: role
+            operator: Equal
+            value: scylla-clusters
+            effect: NoSchedule
+    # - name: b
+    #   members: 1
+    #   storage:
+    #     storageClassName: scylladb-local-xfs
+    #     capacity: 50G
+    #   resources:
+    #     limits:
+    #       cpu: 1
+    #       memory: 6G
+    #   placement:
+    #     nodeAffinity:
+    #       requiredDuringSchedulingIgnoredDuringExecution:
+    #         nodeSelectorTerms:
+    #         - matchExpressions:
+    #           - key: topology.kubernetes.io/zone
+    #             operator: In
+    #             values:
+    #             - eu-central-1b
+    #           - key: scylla.scylladb.com/node-type
+    #             operator: In
+    #             values:
+    #             - scylla
+    #     tolerations:
+    #     - key: role
+    #       operator: Equal
+    #       value: scylla-clusters
+    #       effect: NoSchedule
+    # - name: c
+    #   members: 1
+    #   storage:
+    #     storageClassName: scylladb-local-xfs
+    #     capacity: 50G
+    #   resources:
+    #     limits:
+    #       cpu: 1
+    #       memory: 6G
+    #   placement:
+    #     nodeAffinity:
+    #       requiredDuringSchedulingIgnoredDuringExecution:
+    #         nodeSelectorTerms:
+    #         - matchExpressions:
+    #           - key: topology.kubernetes.io/zone
+    #             operator: In
+    #             values:
+    #             - eu-central-1c
+    #           - key: scylla.scylladb.com/node-type
+    #             operator: In
+    #             values:
+    #             - scylla
+    #     tolerations:
+    #     - key: role
+    #       operator: Equal
+    #       value: scylla-clusters
+    #       effect: NoSchedule
