@@ -10,7 +10,7 @@ import (
 func main() {
 	// Connect to the Scylla cluster
 	cluster := gocql.NewCluster("127.0.0.1") // Replace with your Scylla service IP or DNS
-	// cluster.Port = 9042
+	cluster.Port = 19042                     // scylla shard-aware port, the default client port is 9042
 
 	// cluster.ProtoVersion = 4 // Protocol version 4 as an example.
 	// cluster.DisableInitialHostLookup = true
