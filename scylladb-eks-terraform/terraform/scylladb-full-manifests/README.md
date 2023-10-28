@@ -1,6 +1,6 @@
-## This directory is for deploying scylla using the manifests from scylla-operator/examples/ directory
+## This directory is for deploying scylla using the manifests from the scylla-operator/examples/ directory
 
-## scylla-operator repo
+### scylla-operator repo
 https://github.com/scylladb/scylla-operator/tree/master/examples
 
 ### kubectl installations of scylladb and related resources after the cluster has been provisioned
