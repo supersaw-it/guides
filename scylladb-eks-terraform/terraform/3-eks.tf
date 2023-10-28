@@ -107,19 +107,6 @@ module "eks" {
     }
   }
 
-  # # No need to attach this to the cluster SG, attaching the same rule to the worker nodes is enough
-  # # see https://github.com/scylladb/scylla-operator/issues/567
-  # cluster_security_group_additional_rules = {
-  #   allow_access_to_port_9443 = {
-  #     type                     = "ingress"
-  #     from_port                = 443
-  #     to_port                  = 9443
-  #     protocol                 = "tcp"
-  #     source_security_group_id = module.eks.cluster_security_group_id
-  #     description              = "Allow access from the master nodes to ports 443-9443 inside the private cluster"
-  #   }
-  # }
-
   tags = {
     Environment = "staging"
   }
