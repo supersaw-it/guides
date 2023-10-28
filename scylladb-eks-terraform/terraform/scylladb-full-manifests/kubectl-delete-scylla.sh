@@ -1,7 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-
 ### scylla main cluster
 echo "Removing the scylla cluster..."
 kubectl delete -f ./scylladb-full-manifests/cluster.yaml
