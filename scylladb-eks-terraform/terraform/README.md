@@ -1,3 +1,10 @@
+### provision the infrastructure
+```bash
+terraform init
+
+terraform apply -auto-approve
+```
+
 ### upd kube config
 ```bash
 aws eks update-kubeconfig --name scylla-dev --region eu-central-1
@@ -15,3 +22,8 @@ systemctl cat kubelet
 
 cat /etc/kubernetes/kubelet/kubelet-config.json | grep cpu
 ```
+
+### deploy the database
+```bash
+./scylladb-full-manifests/kubectl-apply-scylla.sh
+``` 
