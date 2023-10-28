@@ -1,4 +1,4 @@
-## This directory is for deploying w/ full manifests from scylla-operator/examples/ directory
+## This directory is for deploying scylla using the manifests from scylla-operator/examples/ directory
 
 ## scylla-operator repo
 https://github.com/scylladb/scylla-operator/tree/master/examples
