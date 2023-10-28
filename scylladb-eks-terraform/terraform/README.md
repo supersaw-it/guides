@@ -12,7 +12,7 @@ aws eks update-kubeconfig --name scylla-dev --region eu-central-1
 kubectl get nodes
 ```
 
-### check kubelet config
+### check kubelet config (optional)
 ```bash
 ssh -i ~/.ssh/id_rsa ec2-user@<YOUR_PUBLIC_IPv4_DNS>
 
