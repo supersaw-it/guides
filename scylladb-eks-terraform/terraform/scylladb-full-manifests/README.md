@@ -4,10 +4,10 @@
 https://github.com/scylladb/scylla-operator/tree/master/examples
 
 ### kubectl installations of scylladb and related resources after the cluster has been provisioned
-run ```'kubectl-apply-scylla.sh'``` 
+run ```bash kubectl-apply-scylla.sh ``` 
 
 ### kubectl cleanup of scylladb and related resources
-run ```'kubectl-delete-scylla.sh'```
+run ```bash kubectl-delete-scylla.sh```
 
 ### troubleshoot
 ```kubectl describe pod <POD_OF_INTEREST_1> -n scylla > pod_1_description.txt```
