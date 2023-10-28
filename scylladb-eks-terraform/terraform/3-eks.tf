@@ -118,15 +118,15 @@ module "eks" {
 # https://github.com/terraform-aws-modules/terraform-aws-eks/issues/2009
 data "aws_eks_cluster" "default" {
   name       = module.eks.cluster_name
-  depends_on = [module.vpc] # otherwise 'error reading EKS Cluster (scylla-dev): couldn't find resource'
+  depends_on = [module.vpc]  # otherwise 'error reading EKS Cluster (scylla-dev): couldn't find resource'
 }
 
 data "aws_eks_cluster_auth" "default" {
   name       = module.eks.cluster_name
-  depends_on = [module.vpc] # otherwise 'error reading EKS Cluster (scylla-dev): couldn't find resource'
+  depends_on = [module.vpc]  # otherwise 'error reading EKS Cluster (scylla-dev): couldn't find resource'
 }
 
 resource "aws_key_pair" "eks_key" {
   key_name   = "eks-keypair"
-  public_key = file("~/.ssh/id_rsa.pub")
+  public_key = file("~/.ssh/id_rsa.pub")  # specify your key location OR modify to provide the location as variable during 'apply'
 }
