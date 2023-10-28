@@ -1,6 +1,6 @@
 ### upd kube config
 ```bash
-aws eks update-kubeconfig --name scylla-dev --region eu-central-1```
+aws eks update-kubeconfig --name scylla-dev --region eu-central-1
 
 kubectl get nodes
 ```
@@ -9,9 +9,9 @@ kubectl get nodes
 ```bash
 ssh -i ~/.ssh/id_rsa ec2-user@<YOUR_EC2_DNS_ADDRESS>```
 
-ps aux | grep kubelet```
+ps aux | grep kubelet
 
-systemctl cat kubelet```
+systemctl cat kubelet
 
 cat /etc/kubernetes/kubelet/kubelet-config.json
 ```
