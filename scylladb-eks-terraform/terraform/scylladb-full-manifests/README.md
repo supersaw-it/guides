@@ -24,7 +24,7 @@ diff pod_1_description.txt pod_2_description.txt
 
 ### logs
 ```bash
-kubectl logs scylla-eu-central-1-eu-central-1a-0 -c scylla-manager-agent -n scylla
+kubectl logs scylla-eu-central-1-eu-central-1a-0 -c scylla-manager-agent -n scylla-manager
 
 kubectl logs scylla-eu-central-1-eu-central-1a-0 -c scylla -n scylla
 ```
