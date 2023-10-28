@@ -76,14 +76,14 @@ module "eks" {
   ]
 
   node_security_group_additional_rules = {
-    # Shard-aware Scylla client port
+    # Shard-aware Scylla client port; node-to-node
     ingress_allow_shard_aware_scylla_port = {
-      type                          = "ingress"
-      protocol                      = "tcp"
-      from_port                     = 19042
-      to_port                       = 19042
-      source_cluster_security_group = true
-      description                   = "Shard-aware Scylla client port"
+      type                     = "ingress"
+      protocol                 = "tcp"
+      from_port                = 19042
+      to_port                  = 19042
+      source_security_group_id = module.eks.node_security_group_id
+      description              = "Allow shard-aware Scylla client port; node-to-node"
     }
 
     # for nodeconfig to successfully apply, see https://github.com/scylladb/scylla-operator/issues/567
