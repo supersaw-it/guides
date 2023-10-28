@@ -7,7 +7,7 @@ kubectl get nodes
 
 ### check kubelet config
 ```bash
-ssh -i ~/.ssh/id_rsa ec2-user@<YOUR_EC2_DNS_ADDRESS>
+ssh -i ~/.ssh/id_rsa ec2-user@<YOUR_PUBLIC_IPv4_DNS>
 
 ps aux | grep kubelet
 
