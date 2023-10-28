@@ -13,5 +13,5 @@ ps aux | grep kubelet
 
 systemctl cat kubelet
 
-cat /etc/kubernetes/kubelet/kubelet-config.json
+cat /etc/kubernetes/kubelet/kubelet-config.json | grep cpu
 ```

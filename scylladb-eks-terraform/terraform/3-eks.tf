@@ -10,13 +10,13 @@ module "eks" {
 
   vpc_id = module.vpc.vpc_id
   # subnet_ids = module.vpc.private_subnets
-  subnet_ids = module.vpc.public_subnets  # beware that the worker nodes are exposed to the internet
+  subnet_ids = module.vpc.public_subnets # beware that the worker nodes are exposed to the internet
 
   enable_irsa = true
 
   eks_managed_node_group_defaults = {
     # modify cpu manager policy, recommended by the scylla docu
-    pre_bootstrap_user_data       = <<-EOT
+    pre_bootstrap_user_data = <<-EOT
       # Install jq
       yum install -y jq
 
@@ -95,6 +95,16 @@ module "eks" {
       source_security_group_id = module.eks.cluster_security_group_id
       description              = "Allow access from the master nodes to ports 443-9443 inside the private cluster"
     }
+
+    # port 22 for ssh, careful: allows access from anywhere (!)
+    ingress_allow_ssh = {
+      type        = "ingress"
+      protocol    = "tcp"
+      from_port   = 22
+      to_port     = 22
+      cidr_blocks = ["0.0.0.0/0"]
+      description = "Allow SSH access"
+    }
   }
 
   # # No need to attach this to the cluster SG, attaching the same rule to the worker nodes is enough
@@ -118,15 +128,15 @@ module "eks" {
 # https://github.com/terraform-aws-modules/terraform-aws-eks/issues/2009
 data "aws_eks_cluster" "default" {
   name       = module.eks.cluster_name
-  depends_on = [module.vpc]  # otherwise 'error reading EKS Cluster (scylla-dev): couldn't find resource'
+  depends_on = [module.vpc] # otherwise 'error reading EKS Cluster (scylla-dev): couldn't find resource'
 }
 
 data "aws_eks_cluster_auth" "default" {
   name       = module.eks.cluster_name
-  depends_on = [module.vpc]  # otherwise 'error reading EKS Cluster (scylla-dev): couldn't find resource'
+  depends_on = [module.vpc] # otherwise 'error reading EKS Cluster (scylla-dev): couldn't find resource'
 }
 
 resource "aws_key_pair" "eks_key" {
   key_name   = "eks-keypair"
-  public_key = file("~/.ssh/id_rsa.pub")  # specify your key location OR modify to provide the location as variable during 'apply'
+  public_key = file("~/.ssh/id_rsa.pub") # specify your key location OR modify to provide the location as variable during 'apply'
 }
