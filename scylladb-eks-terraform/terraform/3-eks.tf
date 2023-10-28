@@ -10,14 +10,12 @@ module "eks" {
 
   vpc_id = module.vpc.vpc_id
   # subnet_ids = module.vpc.private_subnets
-  subnet_ids = module.vpc.public_subnets
+  subnet_ids = module.vpc.public_subnets  # beware that the worker nodes are exposed to the internet
 
   enable_irsa = true
 
   eks_managed_node_group_defaults = {
-    # # attach the EKS cluster primary SG to nodes for nodeconfig to successfully apply
-    # # this is not needed, just add additional Node SG rules below
-    # attach_cluster_primary_security_group = true  
+    # modify cpu manager policy, recommended by the scylla docu
     pre_bootstrap_user_data       = <<-EOT
       # Install jq
       yum install -y jq
@@ -48,14 +46,7 @@ module "eks" {
         effect = "NO_SCHEDULE"
       }]
 
-      # instance_types = ["i4i.large"]
-      # capacity_type  = "ON_DEMAND"
-      ############
-      # instance_types = ["m7gd.medium"]  # 1 vCPU is not a valid instance type for requested amiType AL2_x86_64
-      # ami_type = "AL2_ARM_64"
-      # capacity_type = "SPOT"
-      ############
-      instance_types = ["i4i.large"] # 2 vCPUs c5ad.large
+      instance_types = ["i4i.large"] # 2 vCPUs, c5ad.large also possible 
       capacity_type  = "SPOT"
     }
 
@@ -70,13 +61,6 @@ module "eks" {
         pool = "monitoring-pool"
       }
 
-      # instance_types = ["i3.large"]
-      # capacity_type  = "ON_DEMAND"
-      ############
-      # instance_types = ["c7gd.medium"]  # 1 vCPUs is not a valid instance type for requested amiType AL2_x86_64
-      # ami_type = "AL2_ARM_64"
-      # capacity_type = "ON_DEMAND"
-      ############
       instance_types = ["i3.large"] # 2 vCPUs
       capacity_type  = "ON_DEMAND"
     }
@@ -141,14 +125,6 @@ data "aws_eks_cluster_auth" "default" {
   name       = module.eks.cluster_name
   depends_on = [module.vpc] # otherwise 'error reading EKS Cluster (scylla-dev): couldn't find resource'
 }
-
-# data "aws_eks_cluster" "default" {
-#   name = module.eks.cluster_id
-# }
-
-# data "aws_eks_cluster_auth" "default" {
-#   name = module.eks.cluster_id
-# }
 
 resource "aws_key_pair" "eks_key" {
   key_name   = "eks-keypair"
