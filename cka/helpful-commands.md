@@ -1,6 +1,8 @@
 ## k setup
 ```bash
-export do="--dry-run=client -o yaml"
+export do="--dry-run=client -o yaml" # k create deploy nginx --image=nginx $do
+export now="--force --grace-period 0"   # k delete pod x $now
+
 alias kcurl='k run tmp --restart=Never --rm -i --image=nginx:alpine -- curl -m 5'
 ```
 
