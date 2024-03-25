@@ -65,6 +65,14 @@ systemctl start kubelet # start the upgraded kubelet
 # now use the kubeadm join command; it was provided as the output of 'kubeadm token create --print..'
 ```
 
+## certificates
+```bash
+openssl x509  -noout -text -in /etc/kubernetes/pki/apiserver.crt | grep Validity -A2 # check validity of kubeapi-server
+
+# same w/ kubeadm
+kubeadm certs check-expiration | grep apiserver
+```
+
 ## resources consumption
 ```bash
 k -n moon top po
