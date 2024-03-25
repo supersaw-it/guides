@@ -91,6 +91,37 @@ kubectl annotate po nginx{1..3} description='my description'  # annotate 3 pods
 k -n pluto expose pod project-plt-6cc-api --name project-plt-6cc-svc --port 3333 --target-port 80  # expose an already created pod
 ```
 
+## network policies
+```yaml
+# allow access only to pods with label db1 or db2 on specific port
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: np-backend
+  namespace: project-snake
+spec:
+  podSelector:
+    matchLabels:
+      app: backend
+  policyTypes:
+    - Egress                    # policy is only about Egress
+  egress:
+    - to:                           # first condition "to"
+      - podSelector:
+          matchLabels:
+            app: db1
+      ports:                        # second condition "port"
+      - protocol: TCP
+        port: 1111
+    - to:                           # first condition "to"
+      - podSelector:
+          matchLabels:
+            app: db2
+      ports:                        # second condition "port"
+      - protocol: TCP
+        port: 2222
+```
+
 ## resource quota
 ```bash
 kubectl create quota myrq --hard=cpu=1,memory=1G,pods=2  # hard limits
