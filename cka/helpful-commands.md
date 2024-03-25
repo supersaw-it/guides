@@ -67,7 +67,8 @@ systemctl start kubelet # start the upgraded kubelet
 
 ## certificates
 ```bash
-openssl x509  -noout -text -in /etc/kubernetes/pki/apiserver.crt | grep Validity -A2 # check validity of kubeapi-server
+# ssh into a control plane node and run:
+openssl x509  -noout -text -in /etc/kubernetes/pki/apiserver.crt | grep Validity -a2 # check validity of kubeapi-server
 
 # same w/ kubeadm
 kubeadm certs check-expiration | grep apiserver
