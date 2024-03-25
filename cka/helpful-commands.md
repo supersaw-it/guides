@@ -3,6 +3,10 @@
 export do="--dry-run=client -o yaml" # k create deploy nginx --image=nginx $do
 export now="--force --grace-period 0"   # k delete pod x $now
 
+alias k='kubectl'
+complete -o default -F __start_kubectl k # completion for the alias 'k' 
+source <(kubectl completion bash) # completion for kubectl
+
 alias kcurl='k run tmp --restart=Never --rm -i --image=nginx:alpine -- curl -m 5'
 ```
 
