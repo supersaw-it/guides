@@ -1,9 +1,8 @@
-
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "5.7.1" # Specify the version that suits your needs
+  version = "5.7.1"
 
-  name = "my-vpc"
+  name = "cks-vpc"
   cidr = "10.0.0.0/16"
 
   azs             = ["eu-central-1a", "eu-central-1b"]
@@ -13,9 +12,34 @@ module "vpc" {
   enable_nat_gateway = true
   single_nat_gateway = true
 
+  default_security_group_ingress = [
+    {
+      from_port   = 0,
+      to_port     = 0,
+      protocol    = "-1",
+      cidr_blocks = ["10.0.0.0/16"],
+      description = "Allow all inbound traffic from within the VPC"
+    }
+  ]
+
+  default_security_group_egress = [
+    {
+      from_port   = 0,
+      to_port     = 0,
+      protocol    = "-1",
+      cidr_blocks = ["0.0.0.0/0"],
+      description = "Allow all outbound traffic"
+    }
+  ]
+
   tags = {
     Terraform   = "true"
     Environment = "dev"
+  }
+
+  default_security_group_name = "cks-default-vpc-sg"
+  default_security_group_tags = {
+    Name = "cks-default-vpc-sg"
   }
 }
 
