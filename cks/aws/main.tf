@@ -17,7 +17,7 @@ module "vpc" {
       from_port   = 0,
       to_port     = 0,
       protocol    = "-1",
-      cidr_blocks = ["10.0.0.0/16"],
+      cidr_blocks = "10.0.0.0/16",
       description = "Allow all inbound traffic from within the VPC"
     }
   ]
@@ -27,7 +27,7 @@ module "vpc" {
       from_port   = 0,
       to_port     = 0,
       protocol    = "-1",
-      cidr_blocks = ["0.0.0.0/0"],
+      cidr_blocks = "0.0.0.0/0",
       description = "Allow all outbound traffic"
     }
   ]
@@ -54,7 +54,7 @@ module "ec2_instances" {
   instance_type          = "t3.medium"
   key_name               = "cks-machines"               # The key created on AWS in EC2 service section; chmod 400 ~/.ssh/<KEY>.pem
   subnet_id              = module.vpc.public_subnets[0] # Using the first public subnet
-  vpc_security_group_ids = [aws_security_group.allow_ssh_and_ports.id]
+  vpc_security_group_ids = [aws_security_group.allow_ssh_and_ports.id, module.vpc.default_security_group_id]
 
   associate_public_ip_address = true
 
