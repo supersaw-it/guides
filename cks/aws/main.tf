@@ -28,7 +28,7 @@ module "ec2_instances" {
 
   ami                    = var.ami_id # Replace this with a valid AMI for your region
   instance_type          = "t3.medium"
-  key_name               = "aws-cks-machines"           # Ensure your key name matches the key created on AWS in EC2 service section
+  key_name               = "aws-cks-machines"           # The key created on AWS in EC2 service section; chmod 400 ~/.ssh/aws-cks-machines.pem
   subnet_id              = module.vpc.public_subnets[0] # Using the first public subnet
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
 
