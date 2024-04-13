@@ -13,3 +13,10 @@ Host *amazonaws.com
   IdentitiesOnly yes
   CheckHostIP no
 ```
+
+## Cluster setup
+copy the *install_** scripts
+```bash
+scp cluster-setup/install_master.sh ubuntu@<EC2_MASTER_HOSTNAME>:/
+scp cluster-setup/install_worker.sh ubuntu@<EC2_WORKER_HOSTNAME>:/
+```
