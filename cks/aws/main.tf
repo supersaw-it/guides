@@ -30,7 +30,7 @@ module "ec2_instances" {
   instance_type          = "t3.medium"
   key_name               = "cks-machines"               # The key created on AWS in EC2 service section; chmod 400 ~/.ssh/<KEY>.pem
   subnet_id              = module.vpc.public_subnets[0] # Using the first public subnet
-  vpc_security_group_ids = [aws_security_group.allow_ssh.id]
+  vpc_security_group_ids = [aws_security_group.allow_ssh_and_ports.id]
 
   associate_public_ip_address = true
 
