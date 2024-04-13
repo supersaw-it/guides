@@ -12,6 +12,19 @@ Host *amazonaws.com
   IdentityFile ~/.ssh/cks-machines.pem
   IdentitiesOnly yes
   CheckHostIP no
+
+# configure individual hostnames for brevity
+Host cks-master
+  HostName <ec2-PUBLIC_IP.REGION>.compute.amazonaws.com # specific hostname for brevity
+  User ec2-user
+  IdentityFile ~/.ssh/cks-machines.pem
+IdentitiesOnly yes
+
+Host cks-worker
+	HostName <ec2-PUBLIC_IP.REGION>.compute.amazonaws.com # specific hostname for brevity
+	User ec2-user
+	IdentityFile ~/.ssh/cks-machines.pem
+	IdentitiesOnly yes
 ```
 
 ## Cluster setup
