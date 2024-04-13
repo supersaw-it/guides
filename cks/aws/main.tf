@@ -22,15 +22,17 @@ module "vpc" {
 module "ec2_instances" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "5.6.1" # Specify the version that suits your needs
-
-  name     = "my-instance"
+  
   for_each = toset(["master", "worker"])
+  name = "instance-${each.key}"
 
   ami                    = var.ami_id # Replace this with a valid AMI for your region
   instance_type          = "t3.medium"
   key_name               = "aws-cks-machines"           # Ensure your key name matches the key created on AWS in EC2 service section
   subnet_id              = module.vpc.public_subnets[0] # Using the first public subnet
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
+
+  associate_public_ip_address = true
 
   tags = {
     Terraform   = "true"
