@@ -24,7 +24,7 @@ module "ec2_instances" {
   version = "5.6.1" # Specify the version that suits your needs
 
   for_each = toset(["master", "worker"])
-  name     = "instance-${each.key}"
+  name     = "cks-${each.key}"
 
   ami                    = var.ami_id # Replace this with a valid AMI for your region
   instance_type          = "t3.medium"
@@ -40,9 +40,9 @@ module "ec2_instances" {
   }
 }
 
-resource "aws_security_group" "allow_ssh" {
-  name        = "allow_ssh"
-  description = "Allow SSH inbound traffic"
+resource "aws_security_group" "allow_ssh_and_ports" {
+  name        = "allow_ssh_and_ports"
+  description = "Allow SSH and specific port range inbound traffic"
   vpc_id      = module.vpc.vpc_id
 
   ingress {
@@ -52,10 +52,23 @@ resource "aws_security_group" "allow_ssh" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # K8s ingress rule for ports 30000-40000
+  ingress {
+    from_port   = 30000
+    to_port     = 40000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Allow outbound traffic for all ports
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "allow_ssh_and_ports"
   }
 }
