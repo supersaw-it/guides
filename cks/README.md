@@ -13,16 +13,16 @@ Host *amazonaws.com
   IdentitiesOnly yes
   CheckHostIP no
 
-# configure individual hostnames for brevity
+# optional: configure individual hostnames for brevity
 Host cks-master
-  HostName <ec2-PUBLIC_IP.REGION>.compute.amazonaws.com # specific hostname for brevity
-  User ec2-user
+  HostName <ec2-PUBLIC_IP.REGION>.compute.amazonaws.com # specific hostname for brevity, ! changes w/ every instance stop/start
+  User ubuntu
   IdentityFile ~/.ssh/cks-machines.pem
 IdentitiesOnly yes
 
 Host cks-worker
-	HostName <ec2-PUBLIC_IP.REGION>.compute.amazonaws.com # specific hostname for brevity
-	User ec2-user
+	HostName <ec2-PUBLIC_IP.REGION>.compute.amazonaws.com # specific hostname for brevity, ! changes w/ every instance stop/start
+	User ubuntu
 	IdentityFile ~/.ssh/cks-machines.pem
 	IdentitiesOnly yes
 ```

@@ -26,6 +26,7 @@ echo 'colorscheme ron' >> ~/.vimrc
 echo 'set tabstop=2' >> ~/.vimrc
 echo 'set shiftwidth=2' >> ~/.vimrc
 echo 'set expandtab' >> ~/.vimrc
+echo 'source /etc/bash_completion' >> ~/.bashrc
 echo 'source <(kubectl completion bash)' >> ~/.bashrc
 echo 'alias k=kubectl' >> ~/.bashrc
 echo 'alias c=clear' >> ~/.bashrc
