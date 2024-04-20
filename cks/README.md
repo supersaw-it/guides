@@ -11,7 +11,7 @@ export AWS_SECRET_ACCESS_KEY="YOUR_SECRET"
 cd aws/
 
 # change the "region" variable to suit your preference; default is 'eu-central-1'
-# if you change the region, variable "ami_id" must also be adjsuted accordingly to your region
+# if you change the region, variable "ami_id" must also be adjusted according to your region
 vim variables.tf 
 
 terraform init
