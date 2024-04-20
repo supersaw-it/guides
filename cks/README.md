@@ -37,13 +37,13 @@ Host cks-master
   HostName <ec2-PUBLIC_IP.REGION>.compute.amazonaws.com # specific hostname for brevity, ! changes w/ every instance stop/start
   User ubuntu
   IdentityFile ~/.ssh/cks-machines.pem # place your private key (generated via the AWS console) in the .ssh/ sub-directory
-IdentitiesOnly yes
+  IdentitiesOnly yes
 
 Host cks-worker
-	HostName <ec2-PUBLIC_IP.REGION>.compute.amazonaws.com # specific hostname for brevity, ! changes w/ every instance stop/start
-	User ubuntu
-	IdentityFile ~/.ssh/cks-machines.pem
-	IdentitiesOnly yes
+  HostName <ec2-PUBLIC_IP.REGION>.compute.amazonaws.com # specific hostname for brevity, ! changes w/ every instance stop/start
+  User ubuntu
+  IdentityFile ~/.ssh/cks-machines.pem
+  IdentitiesOnly yes
 ```
 
 ## Cluster setup
