@@ -2,7 +2,7 @@
 
 ```bash
 sed -i '500,2000 s/enabled/disabled/gi' values.conf # lines
-sed -i 's~#%$2jh//238720//31223~$2//23872031223~g' /home/bob/data.txt # bs 
+sed -i 's~#%$2jh//238720//31223~$2//23872031223~g' /home/bob/data.txt # non-alphanumeric 
 
 egrep -o '[A-Z][a-z]{2,}' /etc/nsswitch.conf # 1 capital and 2 min. lowercase
 egrep '[0-9]{5}' textfile > number # match a 5 digit number
@@ -24,15 +24,15 @@ bash ./script.sh > output.txt 2>&1 # both stdout and stderr
 
 sort -duf /home/bob/values.conf # Sort the contents of the file alphabetically; Dictionary order, Unique values and Fold lower case.
 sort -f values.conf | uniq -i # # Sort the contents of the file alphabetically + Fold lower case; unique values with case Ignored.
+
+openssl req -newkey rsa:2048 -keyout priv.key -out cert.csr # generate a 4096-bit RSA private key and a Certificate Signing Request
+openssl req -x509 -noenc -days 365 -keyout priv.key -out kodekloud.crt # self-signed cert; no Encryption for the private key, expires in 365 Days
+openssl x509 -in /home/bob/my.crt -text | grep CN # inspect the Common Name
 ```
 
 ## 2 - Operations Deployment
 
 ```bash
-openssl req -newkey rsa:2048 -keyout priv.key -out cert.csr # generate a 4096-bit RSA private key and a Certificate Signing Request
-openssl req -x509 -noenc -days 365 -keyout priv.key -out kodekloud.crt # self-signed cert; no Encryption for the private key, expires in 365 Days
-openssl x509 -in /home/bob/my.crt -text | grep CN # inspect the Common Name
-
 sudo shutdown -p +120 # schedule a Poweroff in 2 hrs
 
 systemctl list-units --type target # list active Targets to boot into
