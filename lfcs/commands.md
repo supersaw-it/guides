@@ -22,5 +22,25 @@ tar -xf archive.tar.gz -C /tmp # extraction directory Changes
 bash -x ./script.sh &> output.txt # both stdout and stderr, shows eXecuted commands explicitly (debugging)
 bash ./script.sh > output.txt 2>&1 # both stdout and stderr
 
+sort -duf /home/bob/values.conf # Sort the contents of the file alphabetically; Dictionary order, Unique values and Fold lower case.
+sort -f values.conf | uniq -i # # Sort the contents of the file alphabetically + Fold lower case; unique values with case Ignored.
+```
+
+## 2 - Operations Deployment
+
+```bash
+openssl req -newkey rsa:2048 -keyout priv.key -out cert.csr # generate a 4096-bit RSA private key and a Certificate Signing Request
+openssl req -x509 -noenc -days 365 -keyout priv.key -out kodekloud.crt # self-signed cert; no Encryption for the private key, expires in 365 Days
+openssl x509 -in /home/bob/my.crt -text | grep CN # inspect the Common Name
+
+sudo shutdown -p +120 # schedule a Poweroff in 2 hrs
+
+systemctl list-units --type target # list active Targets to boot into
+systemctl list-unit-files --type target # list all Targets to boot into
+sudo systemctl set-default graphical.target
+
+sudo journalctl -u ssh.service # check logs for Unit ssh.service
+journalctl -e -f -p err -g '^b' -S 01:00 -U 02:00 -b 0 # jump to End, Follow, choose Priority, Grep, Start / Until, current Boot
+
 ```
 
