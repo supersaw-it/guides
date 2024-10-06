@@ -42,5 +42,26 @@ sudo systemctl set-default graphical.target
 sudo journalctl -u ssh.service # check logs for Unit ssh.service
 journalctl -e -f -p err -g '^b' -S 01:00 -U 02:00 -b 0 # jump to End, Follow, choose Priority, Grep, Start / Until, current Boot
 
+dpkg --listfiles coreutils | egrep  "^/bin/" # List files of the coreutils pkg | grep for a particular directory
+sudo apt search --names-only 'apache http' # search for the specified terms in pkg Names only
+
+sudo find /etc/ -type f -name "sources*" # find the sources list for apt
+
+du -sh /bin/ | egrep "[0-9]+[A-Z]+" -o # dusk usage Summary of the /bin/ directory; Human-readable
+free --mega | awk 'NR==2 {print $2}' # get the total Memory in Megabytes; 2nd Row, 2nd Printed column; Human-readable
+
+sudo xfs_repair /dev/vdb -v # repair an XFS filesystem; Verbose; has to be unmounted
+sudo fsck.ext4 /dev/vda1 -fp # repair an ext4 filesystem; Force checking; automatic rePair (no questions); has to be unmounted
+
+ps -eZ | grep sshd # all processes with SELinux labels
+sudo chcon -t httpd_sys_content_t /var/index.html # Change the SELinux Type
+sudo restorecon -R /var/log # Restore the correct (default) labels for every file and subdirectory
+setenforce permissive # change the SELinux status
+semanage user -l # list SELinux users
+
+sysctl -w kernel.modules_disabled=1 # Turn on a kernel runtime parameter
+vim /etc/sysctl.conf # modify kernel runtime parameters
+sysctl -p # apply the changes
+
 ```
 
