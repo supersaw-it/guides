@@ -63,5 +63,29 @@ sysctl -w kernel.modules_disabled=1 # Turn on a kernel runtime parameter
 vim /etc/sysctl.conf # modify kernel runtime parameters
 sysctl -p # apply the changes
 
+docker run --detach  --publish 9080:80 --name webinstance1 --restart always httpd # run an apache server, redirect port 9080 to the container's port 80
+
+virsh list --all
+virsh destroy VM1 # 'unplug' VM1
+virsh undefine VM1 # remove VM1
+virsh create /opt/testmachine2.xml # create a VM from a configuration file
+virsh autostart VM2 # start VM2 on host boot
+
+# set memory and restart if no OS is present on the VM:
+virsh setmaxmem VM2 80M --config
+virsh setmem VM2 80M --config
+virsh destroy VM2
+virsh start VM2
+
+# create a VM from a predefined image
+virt-install --import --vcpus 1 --memory 1024 --name kk-ubuntu \
+ --disk /var/lib/libvirt/images/ubuntu-22.04-minimal-cloudimg-amd64.img \
+ --os-variant ubuntu22.04 --graphics none 
+
 ```
 
+## 3 - Users and Groups
+
+```bash
+
+```
