@@ -87,5 +87,43 @@ virt-install --import --vcpus 1 --memory 1024 --name kk-ubuntu \
 ## 3 - Users and Groups
 
 ```bash
+sudo adduser --system apachedev # create a system account
+sudo adduser jack --shell /bin/csh # add user & specify the default shell
+sudo adduser sam --uid 5322 --in-group soccer # specify user id and group (primary)
+sudo useradd -G soccer sam  --uid 5322 # specify user id and group (additional)
+
+sudo deluser sam --remove-home # remove user and their home directory
+
+sudo usermod jane --expiredate '2030-03-01' # set expire date on the account
+sudo usermod jane -e -1 # remove expiration date on the accont
+sudo usermod -a -G developers jane # add to Group 'developers' Additionally
+
+sudo chage jane --lastday 0 # mark the password as expired to force the user to immediately change it on the enxt login
+sudo chage jane -W 2 # set password expiration warning days
+
+sudo addgroup cricket --gid 9875 # create group with a specific group id
+
+sudo groupmod cricket --new-name soccer # change group name
+
+ls -ltra /etc/skel/ # list files that are copeid on user creation to their home directory
+sudo vim /etc/profile.d/hi.sh # add a script to be executed one very login
+
+sudo vim /etc/security/limits.conf # impsoe resource limits on users and groups
+ulimit -a # list current user limits
+
+sudo vim /etc/sudoers # open the sudoers file, add '<user> ALL=(ALL) NOPASSWD: ALL' to bypass password input when invoking sudo
+
+
+```
+
+## 4 - Networking
+
+```bash
+
+```
+
+## 5 - Storage
+
+```bash
 
 ```
