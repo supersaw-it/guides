@@ -119,6 +119,66 @@ sudo vim /etc/sudoers # open the sudoers file, add '<user> ALL=(ALL) NOPASSWD: A
 ## 4 - Networking
 
 ```bash
+ip -c a # w/ Color 
+ip -c route # inspect Routes
+
+resolvectl status # inspect Resolvers
+sudo vim /etc/systemd/resolved.conf # modify resolutions settings, e.g. select default DNS for all interfaces
+sudo systemctl restart systemd-resolved.service # restart for the configuration to be applied
+
+sudo ip link set dev enpXsY up # bring the interface Device Up
+sudo ip link set dev enpXsY down # bring the interface Device Down
+
+sudo ip a add 143.3.231.5/24 dev enpXsY # Add an ipv4 address to Device 
+sudo ip a add fa10::4942:ff:fe2b:2922/64 dev enpXsY # Add an ipv6 address to Device
+sudo ip a delete fa10::4942:ff:fe2b:2922/64 dev enpXsY # Delete an ipv6 address to Device
+
+sudo netplan try --timeout 30 # Try with a custom Timeout
+sudo netplan apply # Apply straightaway 
+ls /usr/share/doc/netplan/examples/ # list netplan examples
+
+#### Socket statistics
+
+sudo ss -tulpn # TCP, UDP, Listening, Processes, Numeric values for socket statistics
+sudo ss -tulpn | grep :22 | awk '{print $7}' | awk -F '[,=]' '{print $3}' # find out what Process is Listening for incoming connections on port 22 and identify PID; Field separators are ',' and '='
+sudo ss -tulpn | awk 'NR>1 {print $5}' | egrep -o '[0-9]+$' # find LISTEN (tcp) or UNCONN (udp) port numbers
+
+#### Firewall basics
+
+sudo ufw status numbered # Status of the uncomplicated firewal; rules are Numbered
+sudo ufw deny out on enpXsY to 8.8.8.8 # Deny Outgoing traffic from Device x to ip y
+sudo ufw insert 1 deny from 10.0.0.19 # Insert a rule at the top of the rules table, i.e. it takes priority
+sudo ufw allow in on enpXsY from 10.0.0.192 to 10.0.0.100 proto tcp # example in
+sudo ufw allow out on enpXsY from 10.0.0.100 to 10.0.0.192 proto tcp # example out
+
+sudo vim /etc/sysctl.d/99-sysctl.conf # enable ipv4 forwarding by uncommenting the 'net.ipv4.ip_forward=1' line
+sudo sysctl --system # apply the changes
+
+# Port redirection
+
+man ufw-framework # / for 'DNAT' to find NAT and Masquerading examples
+
+sudo iptables -t nat -A PREROUTING -p tcp -i ethX --dport 8080 -s 192.168.0.0/24 -j DNAT --to-destination 10.0.0.2:80 # redirect packets from Source:dport to Destination
+sudo iptables -t nat -A POSTROUTING -s 192.168.0.0/24 -o ethX -j MASQUERADE # masquerade the redirected packets: the destination sees the current host as the source of the packets
+
+sudo apt install iptables-persistent # install the package to allow iptables persistence
+sudo netfilter-persistent save # persist the iptables changes
+
+sudo iptables --list-rules --table nat # list nat rules
+sudo iptables --flush --table nat # reset the nat table
+
+# Configure SSH
+sudo vim /etc/ssh/sshd_config # configure the ssh Daemon
+ls /etc/ssh/sshd_config.d/ # list additional configuration files
+sudo systemctl reload ssh.service
+
+ssh-keygen -R 10.0.0.12 # remove fingerprint for a server
+rm -f ~/.ssh/known_hosts # remove all fingerprints for a user
+
+# Squid proxy
+sudo vi /etc/squid/squid.conf # then add
+acl facebook dstdomain .facebook.com # this
+http_access deny facebook # and this
 
 ```
 
