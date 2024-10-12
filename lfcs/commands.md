@@ -137,13 +137,13 @@ sudo netplan try --timeout 30 # Try with a custom Timeout
 sudo netplan apply # Apply straightaway 
 ls /usr/share/doc/netplan/examples/ # list netplan examples
 
-#### Socket statistics
+# Socket statistics
 
 sudo ss -tulpn # TCP, UDP, Listening, Processes, Numeric values for socket statistics
 sudo ss -tulpn | grep :22 | awk '{print $7}' | awk -F '[,=]' '{print $3}' # find out what Process is Listening for incoming connections on port 22 and identify PID; Field separators are ',' and '='
 sudo ss -tulpn | awk 'NR>1 {print $5}' | egrep -o '[0-9]+$' # find LISTEN (tcp) or UNCONN (udp) port numbers
 
-#### Firewall basics
+# Firewall basics
 
 sudo ufw status numbered # Status of the uncomplicated firewal; rules are Numbered
 sudo ufw deny out on enpXsY to 8.8.8.8 # Deny Outgoing traffic from Device x to ip y
@@ -185,5 +185,32 @@ http_access deny facebook # and this
 ## 5 - Storage
 
 ```bash
+# Partition management
+cfdisk /dev/vdb # TUI for partition management
+
+mkswap /dev/vdb2 # initialize the partition as swap area
+swapon /dev/vdb2 # activate the swap partition
+swapon --show
+
+sudo vim /etc/fstab # run and add the line below
+/dev/vdb2 none swap sw 0 0 # persist on reboot
+
+# Filesystem management
+mkfs.xfs # create an XFS filesystem
+mkfs.ext4 # create an ext4 filesystem
+
+xfs_admin # manage an XFS filesystem
+tune2fs # manage an ext4 filesystem
+
+sudo vim /etc/fstab # mount partitions
+sudo systemctl daemon-reload # notify systemd of the updated configuration
+
+sudo blkid /dev/vdb1 # block device uuid
+ls -l /dev/disk/by-uuid/ # check uuid to block device mapping
+
+# Filesystem and mount options
+findmnt -t xfs,ext4 # list mounted partitions
+
+sudo mount -o remount,ro,noexec,nosuid /dev/vdb2 /mnt # re-mount as read-only, no execution & no privilege escalation (Sudo)
 
 ```
