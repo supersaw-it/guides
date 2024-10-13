@@ -213,4 +213,82 @@ findmnt -t xfs,ext4 # list mounted partitions
 
 sudo mount -o remount,ro,noexec,nosuid /dev/vdb2 /mnt # re-mount as read-only, no execution & no privilege escalation (Sudo)
 
+# Use NFS and NBD
+# NFS
+sudo vim /etc/exports  # configure NFS exports, e.g.:
+#
+/home 192.0.0.0/24(ro,sync,no_subtree_check) 127.0.0.10(rw,no_root_squash) # allow a range of hosts to mount /home
+#
+exportfs -r # re-export the NFS configuration
+
+sudo vim /etc/fstab # add an NFS
+#
+127.0.0.1:/home /mnt nfs defaults 0 0
+#
+
+# NBD
+sudo vim /etc/nbd-server/config # configure the NBD server, add:
+#
+[generic]
+        allowlist = true
+[partition2]
+        exportname=/dev/vdb1
+#
+sudo systemctl restart nbd-server.service
+man 5 nbd-server # manual for section 5
+
+sudo modprobe nbd # load the client NBD module
+sudo vim /etc/modules-load.d/modules.conf # persist the kernel module loading at boot; add 'nbd' to the file
+sudo nbd-client -l 127.0.0.1 # list available NBDs on localhost (127.0.0.1)
+sudo nbd-client 127.0.0.1 -N partition2 # attach 'partition 2' NBD from the localhost (127.0.0.1)
+sudo nbd-client -d /dev/nbd0 # detach the NBD
+
+# LVM: Physical Volumes, Volume Groups, Logical Volumes and Physical Extents
+sudo lvmdiskscan # list available disks and partitions
+sudo pvcreate /dev/sdc /dev/sdd # create PVs from physical disks; prerequisite for creating VGs
+sudo pvs # show PVs
+sudo pvremove /dev/sde # remove a PV from LVM
+
+sudo vgcreate my_vg /dev/sdc /dev/sdd # create a VG from two PVs
+sudo vgextend my_vg /dev/sde # extend a VP with an additional PV
+sudo vgs # list VGs
+sudo vgreduce my_vg /dev/sde # remove a PV from a VG
+
+sudo lvcreate --size 2G --name partition1 my_vg # create an LV (partition) from a VG
+sudo lvresize --extents 100%VG my_vg/partition1 # resize an LV so that it uses 100% of available space in its VG
+sudo lvresize --size 2G my_vg/partition1 # resize an LV to the specified size
+sudo lvs # list LVs
+
+sudo lvdisplay # print LV info
+sudo mkfs.ext4 /dev/my_vg/partition1 # create a filesystem from an LV
+sudo lvresize --resizefs --size 3G my_vg/partition1 # resize both the LV and its filesystem
+
+vg # and double TAB for VG commands; same for pv, lv etc.
+
+# Monitor storage performance / RAID
+sudo apt install sysstat
+iostat # historical / average storage utilization since bootup
+
+dd if=/dev/zero of=DELETEME bs=1 count=1000000 oflag=dsync & # do not use write cache (oflag=dsync)
+iostat -dh 1 # refresh every second; Device only, Human readable
+iostat -p sda # list partitions only on /dev/sda; alternatively use '-p ALL'
+pidstat -d --human 1 # io stats w/ process ids for Devices; refreshes every second, Human readable
+
+sudo dmsetup info /dev/dm-o # command line wrapper for communication with the Device Mapper (LVM)
+
+sudo cat /proc/mdstat # shows a snapshot of the kernel's RAID/md state
+sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/vdb /dev/vdc # Create a Level 1 RAID array, at /dev/md0, w/ 2 devices: /dev/vdb + /dev/vdc
+
+# Advanced Filesystem Permissions
+sudo setfacl --modify user:gio:rw file1
+getfacl file1 
+
+sudo setfacl --modify mask:r file1 # set effective read-only permission (masking limits permissions)
+sudo setfacl --remove-all file1 # remove all ACLs
+
+sudo setfacl --recursive -m user:gio:rw dir1/ # recursively add ACLs to a directory
+sudo setfacl --recursive --remove group:sudo dir/ # recursively remove a group from a directory 
+
+sudo chattr +a file1 # enforce append-only; use '+i' for immutable
+lsattr # list attributes of all files in the current directory
 ```
