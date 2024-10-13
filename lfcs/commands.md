@@ -13,6 +13,12 @@ grep -c '^2' textfile # count of numbers starting with 2
 egrep -w 'man' testfile # exact word
 egrep -wo 'man' testfile # exact word and only the matched word
 
+find / -type f -size +1k -a -size -5k # find files w/ size above 1kb AND less than 5kb; use -o for OR
+find / -type f -perm -0755 # find files where all of the specified permission bits in MODE are set, but files may have additional permission bits set as well.
+find / -type f -perm /0755 # find files that have at least one of the permission bits in MODE set. This is the more permissive search option.
+
+while IFS= read -r line; do echo "$line"; done < files.txt # print each line in a while loop
+
 # del many lines in vim: Make sure the cursor is on the very first line; then without entering into the insert mode, enter number 1000 and press dd immediately after that. Finally save the file.
 
 sudo tar -cPzf logs.tar.gz /var/log/ # Create, absolute Path, gZip, File (archive) name
@@ -28,6 +34,8 @@ sort -f values.conf | uniq -i # # Sort the contents of the file alphabetically +
 openssl req -newkey rsa:2048 -keyout priv.key -out cert.csr # generate a 4096-bit RSA private key and a Certificate Signing Request
 openssl req -x509 -noenc -days 365 -keyout priv.key -out kodekloud.crt # self-signed cert; no Encryption for the private key, expires in 365 Days
 openssl x509 -in /home/bob/my.crt -text | grep CN # inspect the Common Name
+
+git remote add origin https://github.com/kodekloudhub/git-for-beginners-course.git
 ```
 
 ## 2 - Operations Deployment
@@ -82,6 +90,7 @@ virt-install --import --vcpus 1 --memory 1024 --name kk-ubuntu \
  --disk /var/lib/libvirt/images/ubuntu-22.04-minimal-cloudimg-amd64.img \
  --os-variant ubuntu22.04 --graphics none 
 
+sudo vim /etc/crontab # system-wide crontab
 ```
 
 ## 3 - Users and Groups
@@ -108,7 +117,7 @@ sudo groupmod cricket --new-name soccer # change group name
 ls -ltra /etc/skel/ # list files that are copeid on user creation to their home directory
 sudo vim /etc/profile.d/hi.sh # add a script to be executed one very login
 
-sudo vim /etc/security/limits.conf # impsoe resource limits on users and groups
+sudo vim /etc/security/limits.conf # impose resource limits on users and groups
 ulimit -a # list current user limits
 
 sudo vim /etc/sudoers # open the sudoers file, add '<user> ALL=(ALL) NOPASSWD: ALL' to bypass password input when invoking sudo
@@ -191,6 +200,8 @@ cfdisk /dev/vdb # TUI for partition management
 mkswap /dev/vdb2 # initialize the partition as swap area
 swapon /dev/vdb2 # activate the swap partition
 swapon --show
+
+dd if=/dev/zero of=/swapfile bs=1M count=1024 # swap can also be based on a file of certain size that one creates with the 'dd' command
 
 sudo vim /etc/fstab # run and add the line below
 /dev/vdb2 none swap sw 0 0 # persist on reboot
