@@ -31,7 +31,7 @@ bash ./script.sh > output.txt 2>&1 # both stdout and stderr
 sort -duf /home/bob/values.conf # Sort the contents of the file alphabetically; Dictionary order, Unique values and Fold lower case.
 sort -f values.conf | uniq -i # # Sort the contents of the file alphabetically + Fold lower case; unique values with case Ignored.
 
-openssl req -newkey rsa:2048 -keyout priv.key -out cert.csr # generate a 4096-bit RSA private key and a Certificate Signing Request
+openssl req -newkey rsa:2048 -keyout priv.key -out cert.csr # generate a 2048-bit RSA private key and a Certificate Signing Request
 openssl req -x509 -noenc -days 365 -keyout priv.key -out kodekloud.crt # self-signed cert; no Encryption for the private key, expires in 365 Days
 openssl x509 -in /home/bob/my.crt -text | grep CN # inspect the Common Name
 
@@ -122,7 +122,11 @@ ulimit -a # list current user limits
 
 sudo vim /etc/sudoers # open the sudoers file, add '<user> ALL=(ALL) NOPASSWD: ALL' to bypass password input when invoking sudo
 
+# LDAP
+vim /etc/nslcd.conf # edit to change the ldap server
+vim /etc/nsswitch.conf # configure what the host can fetch from ldap
 
+getent passwd --service ldap
 ```
 
 ## 4 - Networking
@@ -188,6 +192,10 @@ rm -f ~/.ssh/known_hosts # remove all fingerprints for a user
 sudo vi /etc/squid/squid.conf # then add
 acl facebook dstdomain .facebook.com # this
 http_access deny facebook # and this
+
+# NTP
+timedatectl set-timezone "Europe/Bucharest" # set a timezone
+sudo /etc/systemd/timesyncd.conf # add NTP servers etc.
 
 ```
 
