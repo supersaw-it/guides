@@ -1,6 +1,8 @@
 ## 1 - Essential commands
 
 ```bash
+man -k disk # find all commands with 'disk' in their name or description
+
 sed -i '500,2000 s/enabled/disabled/gi' values.conf # lines
 sed -i 's~#%$2jh//238720//31223~$2//23872031223~g' /home/bob/data.txt # non-alphanumeric 
 
@@ -23,7 +25,7 @@ while IFS= read -r line; do echo "$line"; done < files.txt # print each line in 
 
 sudo tar -cPzf logs.tar.gz /var/log/ # Create, absolute Path, gZip, File (archive) name
 tar -tPf logs.tar # list contents
-tar -xf archive.tar.gz -C /tmp # extraction directory Changes
+tar -xf archive.tar.gz -C /tmp # Changes extraction directory 
 
 bash -x ./script.sh &> output.txt # both stdout and stderr, shows eXecuted commands explicitly (debugging)
 bash ./script.sh > output.txt 2>&1 # both stdout and stderr
