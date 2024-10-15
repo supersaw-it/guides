@@ -118,7 +118,8 @@ sudo addgroup cricket --gid 9875 # create group with a specific group id
 sudo groupmod cricket --new-name soccer # change group name
 
 ls -ltra /etc/skel/ # list files that are copeid on user creation to their home directory
-sudo vim /etc/profile.d/hi.sh # add a script to be executed one very login
+vim /etc/profile.d/hi.sh # add a script to be executed one very login
+vim /etc/environment # add Global env variables
 
 sudo vim /etc/security/limits.conf # impose resource limits on users and groups
 ulimit -a # list current user limits
