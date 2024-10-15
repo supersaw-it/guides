@@ -29,6 +29,7 @@ tar -xf archive.tar.gz -C /tmp # Changes extraction directory
 
 bash -x ./script.sh &> output.txt # both stdout and stderr, shows eXecuted commands explicitly (debugging)
 bash ./script.sh > output.txt 2>&1 # both stdout and stderr
+bash ./script.sh; echo $? > exit_code_file.txt # write the exit code
 
 sort -duf /home/bob/values.conf # Sort the contents of the file alphabetically; Dictionary order, Unique values and Fold lower case.
 sort -f values.conf | uniq -i # # Sort the contents of the file alphabetically + Fold lower case; unique values with case Ignored.
