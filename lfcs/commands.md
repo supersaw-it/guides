@@ -15,6 +15,10 @@ grep -c '^2' textfile # count of numbers starting with 2
 egrep -w 'man' testfile # exact word
 egrep -wo 'man' testfile # exact word and only the matched word
 
+grep 'ba*' file.txt # matches lines that contain 'b' followed by zero or more 'a's (e.g., it matches b, ba, baa, baaa)
+grep 'a.b' file.txt# # matches any line containing 'a', followed by any single character, followed by 'b' (e.g., it matches acb, a3b, a_b)
+echo -e "blahaha\nblablablahaha\nblahah\nblaXYZhaha" | egrep 'bla.*haha' # matches string "bla", zero or more of any characters (except newline), literal string "haha"
+
 find / -type f -size +1k -a -size -5k # find files w/ size above 1kb AND less than 5kb; use -o for OR
 find / -type f -perm -0755 # find files where all of the specified permission bits in MODE are set, but files may have additional permission bits set as well.
 find / -type f -perm /0755 # find files that have at least one of the permission bits in MODE set. This is the more permissive search option.
